@@ -1,12 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import Button from "../ui/Button";
 import { navLinks } from "@/lib/data";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const useDark = savedTheme ? savedTheme === "dark" : prefersDark;
+
+    document.documentElement.classList.toggle("dark", useDark);
+    setDark(useDark);
+  }, []);
+
+  function toggleTheme() {
+    const nextDark = !dark;
+    document.documentElement.classList.toggle("dark", nextDark);
+    localStorage.setItem("theme", nextDark ? "dark" : "light");
+    setDark(nextDark);
+  }
+
+  const themeButton = (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface"
+      aria-label={`Cambiar a modo ${dark ? "claro" : "oscuro"}`}
+      aria-pressed={dark}
+    >
+      {dark ? "☀️" : "🌙"}
+      <span>{dark ? "White" : "Dark"}</span>
+    </button>
+  );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-white/90 backdrop-blur-md">
@@ -28,7 +58,8 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          {themeButton}
           <Button href="#contacto">Hablemos</Button>
         </div>
 
@@ -48,6 +79,7 @@ export default function Navbar() {
             </svg>
           )}
         </button>
+        <div className="md:hidden">{themeButton}</div>
       </nav>
 
       {open && (

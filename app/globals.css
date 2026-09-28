@@ -33,3 +33,81 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), system-ui, sans-serif;
 }
+
+.dark {
+  color-scheme: dark;
+  --background: #0b1220;
+  --foreground: #e2e8f0;
+  --primary-light: #172554;
+  --muted: #94a3b8;
+  --border: #263449;
+  --surface: #111c2e;
+}
+
+.dark .bg-white {
+  background-color: var(--background);
+}
+
+.dark header.bg-white\/90 {
+  background-color: rgb(11 18 32 / 90%);
+}
+
+.dark .bg-blue-100 {
+  background-color: #1e3a8a;
+}
+
+.dark #inicio {
+  background-color: var(--background);
+}
+
+html.motion-enabled [data-reveal="hidden"] {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+html.motion-enabled [data-reveal] {
+  transition:
+    opacity 650ms cubic-bezier(0.2, 0.65, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 650ms cubic-bezier(0.2, 0.65, 0.3, 1) var(--reveal-delay, 0ms);
+}
+
+.hero-copy-enter {
+  animation: hero-enter 700ms cubic-bezier(0.2, 0.65, 0.3, 1) both;
+}
+
+.hero-image-float {
+  animation: hero-enter 800ms 120ms cubic-bezier(0.2, 0.65, 0.3, 1) both,
+    gentle-float 6s 1s ease-in-out infinite;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentle-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

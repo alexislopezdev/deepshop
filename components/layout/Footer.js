@@ -39,8 +39,8 @@ export default function Footer() {
               Contacto
             </h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li>info@deepshop.com</li>
-              <li>+54 11 0000-0000</li>
+              <li>alexis.lopez201863@yahoo.com</li>
+              <li>+54 1124875566</li>
               <li>Buenos Aires, Argentina</li>
             </ul>
           </div>
@@ -61,7 +61,7 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/deepshop.ar/?hl=es"
               className="text-slate-400 transition-colors hover:text-white"
               aria-label="Instagram"
             >

@@ -1,5 +1,6 @@
 import SectionTitle from "../ui/SectionTitle";
 import { services } from "@/lib/data";
+import ScrollReveal from "../ui/ScrollReveal";
 
 const icons = {
   store: (
@@ -45,21 +46,23 @@ export default function Services() {
         />
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <div
+          {services.map((service, index) => (
+            <ScrollReveal
               key={service.title}
-              className="group rounded-2xl border border-border bg-white p-8 transition-all duration-300 hover:border-primary/30 hover:shadow-lg"
+              delay={(index % 3) * 100}
             >
-              <div className="mb-5 inline-flex rounded-xl bg-primary-light p-3 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                {icons[service.icon]}
+              <div className="group h-full rounded-2xl border border-border bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg">
+                <div className="mb-5 inline-flex rounded-xl bg-primary-light p-3 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                  {icons[service.icon]}
+                </div>
+                <h3 className="text-xl font-bold text-foreground">
+                  {service.title}
+                </h3>
+                <p className="mt-3 text-muted leading-relaxed">
+                  {service.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-foreground">
-                {service.title}
-              </h3>
-              <p className="mt-3 text-muted leading-relaxed">
-                {service.description}
-              </p>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

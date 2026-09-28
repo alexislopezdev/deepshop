@@ -1,5 +1,6 @@
 import SectionTitle from "../ui/SectionTitle";
 import { values, technologies } from "@/lib/data";
+import ScrollReveal from "../ui/ScrollReveal";
 
 export default function About() {
   return (
@@ -15,18 +16,20 @@ export default function About() {
             />
 
             <div className="mt-10 space-y-6">
-              {values.map((value) => (
-                <div key={value.title} className="flex gap-4">
-                  <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
-                    ✓
+              {values.map((value, index) => (
+                <ScrollReveal key={value.title} delay={index * 90}>
+                  <div className="flex gap-4">
+                    <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                      ✓
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-foreground">{value.title}</h3>
+                      <p className="mt-1 text-muted leading-relaxed">
+                        {value.description}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-foreground">{value.title}</h3>
-                    <p className="mt-1 text-muted leading-relaxed">
-                      {value.description}
-                    </p>
-                  </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>

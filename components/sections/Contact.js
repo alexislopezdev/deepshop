@@ -4,6 +4,7 @@ import { useState } from "react";
 import SectionTitle from "../ui/SectionTitle";
 import Button from "../ui/Button";
 import { projectTypes } from "@/lib/data";
+import ScrollReveal from "../ui/ScrollReveal";
 
 const initialForm = {
   name: "",
@@ -12,12 +13,14 @@ const initialForm = {
   projectType: "",
   message: "",
 };
+const contactEmail = "alexis.lopez201863@yahoo.com";
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function validate() {
     const newErrors = {};
@@ -51,12 +54,37 @@ export default function Contact() {
     }
 
     setLoading(true);
+    setSubmitError("");
 
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${contactEmail}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+          _subject: `Nueva consulta web de ${form.name}`,
+          _replyto: form.email,
+          _template: "table",
+        }),
+      });
+      const result = await response.json();
 
-    setLoading(false);
-    setSubmitted(true);
-    setForm(initialForm);
+      if (!response.ok || !result.success) {
+        throw new Error("No se pudo enviar el mensaje.");
+      }
+
+      setSubmitted(true);
+      setForm(initialForm);
+    } catch {
+      setSubmitError(
+        "No pudimos enviar tu mensaje. Probá de nuevo o escribinos directamente a alexis.lopez201863@yahoo.com."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleReset() {
@@ -80,11 +108,16 @@ export default function Contact() {
           <div className="space-y-8 lg:col-span-2">
             <div>
               <h3 className="font-bold text-foreground">Email</h3>
-              <p className="mt-1 text-muted">info@deepshop.com</p>
+              <a
+                href={`mailto:${contactEmail}`}
+                className="mt-1 inline-block text-muted hover:text-primary"
+              >
+                {contactEmail}
+              </a>
             </div>
             <div>
               <h3 className="font-bold text-foreground">Teléfono</h3>
-              <p className="mt-1 text-muted">+54 11 0000-0000</p>
+              <p className="mt-1 text-muted">+54 1124875566</p>
             </div>
             <div>
               <h3 className="font-bold text-foreground">Ubicación</h3>
@@ -101,7 +134,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="lg:col-span-3">
+          <ScrollReveal className="lg:col-span-3">
             {submitted ? (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-surface px-8 py-16 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
@@ -246,6 +279,12 @@ export default function Contact() {
                   )}
                 </div>
 
+                {submitError && (
+                  <p role="alert" className="text-sm text-red-600">
+                    {submitError}
+                  </p>
+                )}
+
                 <Button
                   type="submit"
                   className="w-full sm:w-auto"
@@ -280,7 +319,7 @@ export default function Contact() {
                 </Button>
               </form>
             )}
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
